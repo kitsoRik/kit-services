@@ -1,0 +1,37 @@
+<kit-combobox-native [value]="value" (valueChange)="changeWork($event)">
+	<kit-combobox-native-option
+		*ngFor="let option of options"
+		[value]="option.value"
+		[text]="option.text"
+		>{{ option.text }}
+	</kit-combobox-native-option>
+</kit-combobox-native>
+
+<kit-button
+	*ngIf="currentWork.savedType === 'unsaved' && currentWork.id !== -1"
+	(click)="saveCurrentToLocal()"
+	>Save local</kit-button
+>
+<kit-button
+	*ngIf="currentWork.savedType === 'unsaved' && currentWork.id !== -1"
+	(click)="saveCurrentToGlobal()"
+	>Save global</kit-button
+>
+
+<kit-button *ngIf="currentWork.savedType !== 'unsaved'" (click)="save()"
+	>Save</kit-button
+>
+
+<kit-button (click)="copyToNew()">Copy to new</kit-button>
+
+<kit-button *ngIf="currentWork.id !== -1" (click)="remove()">Remove</kit-button>
+<kit-button (click)="add()">Add</kit-button>
+
+<kit-toggle [(ngModel)]="isMatching">Match</kit-toggle>
+<kit-toggle [(ngModel)]="isProccessing" [disabled]="!isMatching"
+	>Process</kit-toggle
+>
+<!-- <kit-toggle [(ngModel)]="isHighlighting" [disabled]="!isMatching"
+	>Hightlight</kit-toggle
+> -->
+<!-- TODO -->

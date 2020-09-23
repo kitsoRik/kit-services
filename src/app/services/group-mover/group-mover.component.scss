@@ -1,0 +1,24 @@
+:host {
+    padding: 10px;
+    
+    flex-grow: 1;
+
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+
+    overflow: hidden;
+}
+
+.inputs {
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+}
+
+.outputs {
+    display: grid;
+    grid-template-rows: 50% 50%;
+
+    overflow: hidden;
+}

@@ -1,0 +1,45 @@
+:host {
+    height: 50%;
+    flex: 1;
+
+    display: grid;
+
+    border: 1px solid white;
+    overflow: hidden;
+}
+
+.input-function {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 101;
+
+    min-height: 100px;
+}
+
+.function-errors-bar {
+    min-height: 50px;
+    display: flex;
+}
+
+.tab {
+    display: flex;
+    flex: 1;
+}
+
+.tab-item {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+
+    &[active="true"] {
+        //background-color: red;
+    }
+}
+
+.pattern {
+    &-code,
+    &-arguments {
+        flex: 1;
+        overflow: hidden;
+    }
+}

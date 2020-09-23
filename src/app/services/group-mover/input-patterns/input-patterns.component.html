@@ -1,0 +1,13 @@
+<app-code-wrapper
+	#regExpCM
+	class="reg-exp-pattern"
+	[(code)]="regExpPattern"
+	(codeChange)="setRegExpPattern()"
+>
+</app-code-wrapper>
+<textarea
+	#textCM
+	class="text-pattern"
+	[(ngModel)]="textPattern"
+	(ngModelChange)="setTextPattern()"
+></textarea>

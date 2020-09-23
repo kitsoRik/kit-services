@@ -1,0 +1,30 @@
+:host {
+    height: 50%;
+
+    display: grid;
+    grid-template-rows: min-content auto;
+}
+
+.reg-exp-pattern {
+    max-height: 65px;
+
+    padding: 1px;
+    margin-bottom: 5px;
+
+    flex: 1;
+
+    font-size: 19pt;
+
+    border: 1px solid white;
+
+    overflow: auto;
+}
+
+.text-pattern {
+    padding: 1px;
+
+    flex: 10;
+
+    border: 1px solid white;
+    overflow: auto;
+}

@@ -1,0 +1,19 @@
+:host {
+    padding: 5px;
+    display: flex;
+
+    flex-grow: 1;
+
+    border: 1px solid white;
+
+    overflow: hidden;
+}
+
+.result {
+    flex: 1;
+
+    white-space: pre-wrap;
+    overflow: auto;
+
+    word-wrap: break-word;
+}
