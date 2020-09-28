@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InputResultPatternComponent } from './input-result-pattern.component';
+import { CodeWrapperErrorsComponent } from './code-wrapper-errors.component';
 
-describe('InputResultPatternComponent', () => {
-  let component: InputResultPatternComponent;
-  let fixture: ComponentFixture<InputResultPatternComponent>;
+describe('CodeWrapperErrorsComponent', () => {
+  let component: CodeWrapperErrorsComponent;
+  let fixture: ComponentFixture<CodeWrapperErrorsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InputResultPatternComponent ]
+      declarations: [ CodeWrapperErrorsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InputResultPatternComponent);
+    fixture = TestBed.createComponent(CodeWrapperErrorsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

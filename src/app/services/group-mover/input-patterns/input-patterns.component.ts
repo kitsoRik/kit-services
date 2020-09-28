@@ -1,12 +1,9 @@
-import { Component, OnInit, ViewChild, Input, ElementRef } from "@angular/core";
-import { GroupMoverService } from "../group-mover.service";
-import { ActivatedRoute } from "@angular/router";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { CodemirrorComponent } from "@ctrl/ngx-codemirror";
 import { TextMarker } from "codemirror";
 import { debounce } from "debounce";
 import { ResultControlerService } from "../result-controler.service";
-import { WorkControlerService } from "../work-controler.service";
-import { CodeWrapperComponent } from 'src/components/code-wrapper/code-wrapper.component';
+import { CodeWrapperComponent } from 'src/shared/code-wrapper/code-wrapper.component';
 
 @Component({
 	selector: "app-input-patterns",
@@ -19,18 +16,19 @@ export class InputPatternsComponent implements OnInit {
 	private localMatches: RegExpExecArray[] = [];
 	private markers: TextMarker[] = [];
 
+
 	get regExpPattern(): string {
-		return this.workController.currentWork.regExpPattern;
+		return this.resultController.regExpPattern;
 	}
 	set regExpPattern(value: string) {
-		this.workController.currentWork.regExpPattern = value;
+		this.resultController.regExpPattern = value;
 	}
 
 	get textPattern(): string {
-		return this.workController.currentWork.textPattern;
+		return this.resultController.textPattern;
 	}
 	set textPattern(value: string) {
-		this.workController.currentWork.textPattern = value;
+		this.resultController.textPattern = value;
 	}
 
 	@ViewChild("textCM", { static: true }) textCM: CodeWrapperComponent;
@@ -38,8 +36,6 @@ export class InputPatternsComponent implements OnInit {
 
 	constructor(
 		private resultController: ResultControlerService,
-		private workController: WorkControlerService,
-		private activated: ActivatedRoute
 	) {
 		this.resultController._isHighlighting$.subscribe((value) => {
 			if (value) {
@@ -53,17 +49,6 @@ export class InputPatternsComponent implements OnInit {
 	ngOnInit() {
 		this.setRegExpPattern();
 		this.setTextPattern();
-
-		this.resultController.matches$.subscribe((matches) => {
-			this._matchesLink = matches;
-			if (
-				!this.textCM.codeMirror ||
-				!this.resultController.isHighlighting
-			)
-				return;
-			if (this.localMatches.length === 0) return this.marksAll();
-			this.marksAll();
-		});
 	}
 
 	setRegExpPattern = debounce(this.resultController.processMatches, 400);

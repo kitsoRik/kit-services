@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Group } from '../group.model';
-import { GroupMoverService } from '../group-mover.service';
 import { ResultControlerService } from '../result-controler.service';
 
 @Component({
@@ -21,6 +20,7 @@ export class GroupsViewerComponent {
 	constructor(private resultController: ResultControlerService) {
 		this.resultController.matches$.subscribe(matches => {
 			this.matches = matches;
+			console.log("M");
 			this.setGroup();
 		});
 	}

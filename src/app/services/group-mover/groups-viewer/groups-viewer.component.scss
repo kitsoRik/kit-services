@@ -25,8 +25,8 @@
         &-matches {
             display: flex;
             flex-direction: column;
-            &-item {
-            }
+
+            &-item {}
         }
     }
 
@@ -35,11 +35,7 @@
         justify-content: space-between;
 
         &-prev,
-        &-next {
-            &[disabled="true"] {
-                visibility: hidden;
-            }
-        }
+        &-next {}
     }
 
     &-modal {

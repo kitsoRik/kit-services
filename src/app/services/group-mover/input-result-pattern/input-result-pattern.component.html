@@ -1,39 +1,24 @@
-<kit-tabs [tabIndex]="tabIndex" (tabIndex)="changeTab($event)">
-	<kit-tab index="0" label="Each function">
-		<app-code-wrapper
-			#eachCodeCM
-			class="pattern-code"
-			[(code)]="eachCodePattern"
-			(codeChange)="setEachFunctionText()"
-		>
+<mat-tab-group mat-stretch-tabs class="tabs">
+	<mat-tab label="Each match">
+		<app-code-wrapper #eachCodeCM [(code)]="eachCodePattern" class="wr" (codeChange)="setEachFunctionText()">
 			<app-code-wrapper-errors>{{
-				eachFunctionError
-			}}</app-code-wrapper-errors>
+			eachFunctionError
+		}}</app-code-wrapper-errors>
 		</app-code-wrapper>
-	</kit-tab>
-	<kit-tab index="1" label="Global function">
-		<app-code-wrapper
-			#globalCodeCM
-			class="pattern-code"
-			[(code)]="globalCodePattern"
-			(codeChange)="setGlobalFunctionText()"
-		>
+	</mat-tab>
+	<mat-tab label="All matches">
+		<app-code-wrapper #globalCodeCM [(code)]="globalCodePattern" (codeChange)="setGlobalFunctionText()">
 			<app-code-wrapper-errors>{{
-				eachFunctionError
-			}}</app-code-wrapper-errors>
+			eachFunctionError
+		}}</app-code-wrapper-errors>
 		</app-code-wrapper>
-	</kit-tab>
-	<kit-tab index="2" label="Arguments">
-		<app-code-wrapper
-			#argumentsCM
-			class="pattern-arguments"
-			placeholder="%1 %2 %3"
-			[(code)]="argumentsPattern"
-			(codeChange)="setArgumentsText()"
-		>
+	</mat-tab>
+	<mat-tab label="Arguments">
+		<app-code-wrapper #argumentsCM placeholder="%1 %2 %3" [(code)]="argumentsPattern"
+			(codeChange)="setArgumentsText()">
 			<app-code-wrapper-errors>{{
-				eachFunctionError
-			}}</app-code-wrapper-errors>
+			eachFunctionError
+		}}</app-code-wrapper-errors>
 		</app-code-wrapper>
-	</kit-tab>
-</kit-tabs>
+	</mat-tab>
+</mat-tab-group>

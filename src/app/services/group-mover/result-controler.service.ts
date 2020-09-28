@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { WorkControlerService } from "./work-controler.service";
 
 enum ProcessType {
 	EachGroup,
@@ -18,8 +17,16 @@ export class ResultControlerService {
 	private _isProccessing: Boolean = true;
 	_isHighlighting$ = new BehaviorSubject<Boolean>(false);
 
+	private _eachFunction: string = "";
 	private _eachFunctionError: any = null;
+
+	private _globalFunction: string = "";
 	private _globalFunctionError: any = null;
+
+	private _argumentsPattern: string = "";
+
+	public regExpPattern: string = "";
+	public textPattern: string = "";
 
 	get isMatching(): Boolean {
 		return this._isMatching;
@@ -47,22 +54,27 @@ export class ResultControlerService {
 		this._isHighlighting$.next(value);
 	}
 
+	get eachFunction(): string {
+		return this._eachFunction;
+	}
+
+	set eachFunction(value: string) {
+		this._eachFunction = value;
+	}
+
+	get globalFunction(): string {
+		return this._globalFunction;
+	}
+
+	set globalFunction(value: string) {
+		this._globalFunction = value;
+	}
+
 	get eachFunctionError(): any {
 		return this._eachFunctionError;
 	}
 	get globalFunctionError(): any {
 		return this._globalFunctionError;
-	}
-
-	_workController: WorkControlerService;
-	get workController(): WorkControlerService {
-		return this._workController;
-	}
-	set workController(workController: WorkControlerService) {
-		this._workController = workController;
-		workController.currentWork$.subscribe((currentWork) => {
-			this.proccessLast();
-		});
 	}
 
 	matches$: BehaviorSubject<RegExpExecArray[]>;
@@ -83,6 +95,7 @@ export class ResultControlerService {
 			this.worker.addEventListener("message", ({ data }) => {
 				switch (data.type) {
 					case "FINISH_PROCESS_MATCHES": {
+						console.log("F");
 						this.matches$.next(data.matches);
 						this.proccessLast();
 						break;
@@ -121,27 +134,27 @@ export class ResultControlerService {
 
 	processMatches = () => {
 		if (!this.isMatching) return;
+		console.log(this.matches$.getValue());
 		this.worker.postMessage({
 			type: "PROCESS_MATCHES",
 			data: {
-				regexp: this.workController.currentWork.regExpPattern,
-				text: this.workController.currentWork.textPattern,
+				regexp: this.regExpPattern,
+				text: this.textPattern,
 			},
 		});
 	};
 
 	processEach() {
 		this.processType = ProcessType.EachGroup;
-
 		if (!this.isProccessing || !this.isMatching) return;
 
-		if (this.workController.currentWork.eachFunction === "")
+		if (this._eachFunction === "")
 			return this.result$.next("");
 
 		this.worker.postMessage({
 			type: "PROCESS_EACH_FUNCTION",
 			data: {
-				code: this.workController.currentWork.eachFunction,
+				code: this._eachFunction,
 				matches: this.matches$.getValue(),
 			},
 		});
@@ -152,13 +165,13 @@ export class ResultControlerService {
 
 		if (!this.isProccessing || !this.isMatching) return;
 
-		if (this.workController.currentWork.globalFunction === "")
+		if (this._globalFunction === "")
 			return this.result$.next("");
 
 		this.worker.postMessage({
 			type: "PROCESS_GLOBAL_FUNCTION",
 			data: {
-				code: this.workController.currentWork.globalFunction,
+				code: this._globalFunction,
 				matches: this.matches$.getValue(),
 			},
 		});
@@ -169,13 +182,13 @@ export class ResultControlerService {
 
 		if (!this.isProccessing || !this.isMatching) return;
 
-		if (this.workController.currentWork.argumentsPattern === "")
+		if (this._argumentsPattern === "")
 			return this.result$.next("");
 
 		this.worker.postMessage({
 			type: "PROCESS_ARGUMENTS_PATTERN",
 			data: {
-				pattern: this.workController.currentWork.argumentsPattern,
+				pattern: this._argumentsPattern,
 				matches: this.matches$.getValue(),
 			},
 		});

@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { GroupMoverService } from '../group-mover.service';
+import { Component } from '@angular/core';
 import { ResultControlerService } from '../result-controler.service';
 
 @Component({

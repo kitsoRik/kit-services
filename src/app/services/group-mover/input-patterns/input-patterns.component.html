@@ -1,13 +1,18 @@
-<app-code-wrapper
-	#regExpCM
-	class="reg-exp-pattern"
-	[(code)]="regExpPattern"
-	(codeChange)="setRegExpPattern()"
->
-</app-code-wrapper>
-<textarea
-	#textCM
-	class="text-pattern"
-	[(ngModel)]="textPattern"
-	(ngModelChange)="setTextPattern()"
-></textarea>
+<table class="table" cellspacing="0">
+	<tr class="line">
+		<td>
+			<mat-form-field class="reg-exp-input">
+				<mat-label>Regulat expression</mat-label>
+				<input matInput [(ngModel)]="regExpPattern" (ngModelChange)="setRegExpPattern()">
+			</mat-form-field>
+		</td>
+		<td>
+			<mat-form-field class="reg-exp-flags-input">
+				<mat-label>Flags</mat-label>
+				<input matInput>
+			</mat-form-field>
+		</td>
+	</tr>
+</table>
+
+<textarea style="resize: none;" [(ngModel)]="textPattern" (ngModelChange)="setTextPattern()"></textarea>

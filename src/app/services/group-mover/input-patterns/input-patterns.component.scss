@@ -5,26 +5,19 @@
     grid-template-rows: min-content auto;
 }
 
-.reg-exp-pattern {
-    max-height: 65px;
-
-    padding: 1px;
-    margin-bottom: 5px;
-
-    flex: 1;
-
-    font-size: 19pt;
-
-    border: 1px solid white;
-
-    overflow: auto;
+.table {
+    width: 100%;
 }
 
-.text-pattern {
-    padding: 1px;
+.reg-exp-input {
+    width: 100%;
+}
 
-    flex: 10;
+.reg-exp-flags-input {
+    width: 100%;
+}
 
-    border: 1px solid white;
-    overflow: auto;
+.line {
+    display: grid;
+    grid-template-columns: 1fr 130px;
 }

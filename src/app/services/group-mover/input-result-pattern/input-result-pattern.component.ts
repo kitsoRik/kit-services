@@ -1,9 +1,7 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
+import { Component, ViewChild, AfterViewInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { CodemirrorComponent } from "@ctrl/ngx-codemirror";
+import { CodeWrapperComponent } from 'src/shared/code-wrapper/code-wrapper.component';
 import { ResultControlerService } from "../result-controler.service";
-import { WorkControlerService } from "../work-controler.service";
-import { CodeWrapperComponent } from 'src/components/code-wrapper/code-wrapper.component';
 
 @Component({
 	selector: "app-input-result-pattern",
@@ -19,10 +17,10 @@ export class InputResultPatternComponent implements AfterViewInit {
 	argumentsCM: CodeWrapperComponent;
 
 	get eachCodePattern(): string {
-		return `function(match, index) {\n\t${this.workController.currentWork.eachFunction}\n}`;
+		return `function(match, index) {\n\t${this.resultController.eachFunction}\n}`;
 	}
 	set eachCodePattern(pattern: string) {
-		this.workController.currentWork.eachFunction = /function\(match, index\) {\n\t(((\s*)|.*)*)\n}$/.exec(
+		this.resultController.eachFunction = /function\(match, index\) {\n\t(((\s*)|.*)*)\n}$/.exec(
 			pattern
 		)[1];
 	}
@@ -32,21 +30,16 @@ export class InputResultPatternComponent implements AfterViewInit {
 	}
 
 	get globalCodePattern(): string {
-		return `function(matches) {\n\t${this.workController.currentWork.globalFunction}\n}`;
+		return `function(matches) {\n\t${this.resultController.globalFunction}\n}`;
 	}
 	set globalCodePattern(pattern: string) {
 		if (!pattern.startsWith("function")) return;
-		this.workController.currentWork.globalFunction = /function\(matches\) {\n\t(((\s*)|.*)*)\n}$/.exec(
+		this.resultController.globalFunction = /function\(matches\) {\n\t(((\s*)|.*)*)\n}$/.exec(
 			pattern
 		)[1];
 	}
 
-	get argumentsPattern(): string {
-		return this.workController.currentWork.argumentsPattern;
-	}
-	set argumentsPattern(pattern: string) {
-		this.workController.currentWork.argumentsPattern = pattern;
-	}
+	argumentsPattern: string = "";
 
 	private _tabIndex: number = 0;
 
@@ -59,9 +52,7 @@ export class InputResultPatternComponent implements AfterViewInit {
 
 	constructor(
 		private resultController: ResultControlerService,
-		private workController: WorkControlerService,
-		private activated: ActivatedRoute
-	) {}
+	) { }
 
 	ngAfterViewInit() {
 		this.eachCodeCM.codeMirror.on("beforeChange", (instance, obj) => {

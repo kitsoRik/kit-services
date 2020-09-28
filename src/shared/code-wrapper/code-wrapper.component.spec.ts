@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ResultViewerComponent } from './result-viewer.component';
+import { CodeWrapperComponent } from './code-wrapper.component';
 
-describe('ResultViewerComponent', () => {
-  let component: ResultViewerComponent;
-  let fixture: ComponentFixture<ResultViewerComponent>;
+describe('CodeWrapperComponent', () => {
+  let component: CodeWrapperComponent;
+  let fixture: ComponentFixture<CodeWrapperComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ResultViewerComponent ]
+      declarations: [ CodeWrapperComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ResultViewerComponent);
+    fixture = TestBed.createComponent(CodeWrapperComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
