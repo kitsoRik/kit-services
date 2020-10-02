@@ -2,18 +2,18 @@
 
 const TIMEOUT_FOR_LOOP_ERROR = 3000;
 
-addEventListener("message", ({ data: { type, data } }: any) => {
+addEventListener('message', ({ data: { type, data } }: any) => {
 	switch (type) {
-		case "PROCESS_MATCHES":
+		case 'PROCESS_MATCHES':
 			processMatches(data);
 			break;
-		case "PROCESS_EACH_FUNCTION":
+		case 'PROCESS_EACH_FUNCTION':
 			processEachFunction(data);
 			break;
-		case "PROCESS_GLOBAL_FUNCTION":
+		case 'PROCESS_GLOBAL_FUNCTION':
 			processGlobalFunction(data);
 			break;
-		case "PROCESS_ARGUMENTS_PATTERN":
+		case 'PROCESS_ARGUMENTS_PATTERN':
 			processArguments(data);
 			break;
 	}
@@ -21,20 +21,20 @@ addEventListener("message", ({ data: { type, data } }: any) => {
 
 const processMatches = ({ regexp, text }: any) => {
 	const w = createWorker(({ data: { regexp, text } }) => {
-		const reg = new RegExp(regexp, "g");
+		const reg = new RegExp(regexp, 'g');
 		const matches: RegExpExecArray[] = [];
 		let match: RegExpExecArray;
 		let __index = 0;
-		while ((match = reg.exec(text)) && match[0] !== "") {
+		while ((match = reg.exec(text)) && match[0] !== '') {
 			matches.push(match);
 		}
 
 		postMessage({ matches });
 	});
 
-	w.addEventListener("message", ({ data: { matches } }) => {
+	w.addEventListener('message', ({ data: { matches } }) => {
 		postMessage({
-			type: "FINISH_PROCESS_MATCHES",
+			type: 'FINISH_PROCESS_MATCHES',
 			matches,
 		});
 		w.terminate();
@@ -55,7 +55,7 @@ const processFunctionFactory = (fn, codeName: string) => {
 
 		let flag: Boolean = false;
 
-		w.addEventListener("message", ({ data }) => {
+		w.addEventListener('message', ({ data }) => {
 			flag = true;
 			postMessage(data);
 			w.terminate();
@@ -77,68 +77,68 @@ const processFunctionFactory = (fn, codeName: string) => {
 const processEachFunction = processFunctionFactory(
 	({ data: { code, matches } }) => {
 		try {
-			let result = "";
+			let result = '';
 			matches.forEach((m, i) => {
-				const f = new Function("match, index", `${code}`);
+				const f = new Function('match, index', `${code}`);
 				result += f(m, i);
 			});
 			postMessage({
-				type: "FINISH_PROCESS_EACH_FUNCTION",
+				type: 'FINISH_PROCESS_EACH_FUNCTION',
 				result,
 			});
 		} catch (error) {
 			postMessage({
-				type: "ERROR_PROCESS_EACH_FUNCTION",
+				type: 'ERROR_PROCESS_EACH_FUNCTION',
 				error,
 			});
 		}
 	},
-	"EACH"
+	'EACH'
 );
 
 const processGlobalFunction = processFunctionFactory(
 	({ data: { code, matches } }) => {
 		try {
-			const f = new Function("matches", `${code}`);
+			const f = new Function('matches', `${code}`);
 
 			const result = f(matches);
 
 			postMessage({
-				type: "FINISH_PROCESS_GLOBAL_FUNCTION",
+				type: 'FINISH_PROCESS_GLOBAL_FUNCTION',
 				result,
 			});
 		} catch (error) {
 			postMessage({
-				type: "ERROR_PROCESS_GLOBAL_FUNCTION",
+				type: 'ERROR_PROCESS_GLOBAL_FUNCTION',
 				error,
 			});
 		}
 	},
-	"GLOBAL"
+	'GLOBAL'
 );
 
 const processArguments = ({ pattern, matches }) => {
-	let result = "";
+	let result = '';
 
 	matches.forEach((m) => {
 		let temp = pattern;
 		for (let i = 0; i < m.length; i++) {
-			temp = temp.replace(new RegExp(`%${i + 1}`, "g"), m[i]);
+			temp = temp.replace(new RegExp(`%${i + 1}`, 'g'), m[i]);
 		}
 		result += temp;
 	});
 
 	postMessage({
-		type: "FINISH_PROCESS_ARGUMENTS_PATTERN",
+		type: 'FINISH_PROCESS_ARGUMENTS_PATTERN',
 		result,
 	});
 };
 
 function createWorker(fn) {
-	var blob = new Blob(["self.onmessage = ", fn.toString()], {
-		type: "text/javascript",
+	const blob = new Blob(['self.onmessage = ', fn.toString()], {
+		type: 'text/javascript',
 	});
-	var url = URL.createObjectURL(blob);
+	const url = URL.createObjectURL(blob);
 
-	return new Worker(url, { type: "module" });
+	return new Worker(url, { type: 'module' });
 }

@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 enum ProcessType {
 	EachGroup,
@@ -8,7 +8,7 @@ enum ProcessType {
 }
 
 @Injectable({
-	providedIn: "root",
+	providedIn: 'root',
 })
 export class ResultControlerService {
 	private worker: Worker;
@@ -17,16 +17,16 @@ export class ResultControlerService {
 	private _isProccessing: Boolean = true;
 	_isHighlighting$ = new BehaviorSubject<Boolean>(false);
 
-	private _eachFunction: string = "";
+	private _eachFunction: string = '';
 	private _eachFunctionError: any = null;
 
-	private _globalFunction: string = "";
+	private _globalFunction: string = '';
 	private _globalFunctionError: any = null;
 
-	private _argumentsPattern: string = "";
+	private _argumentsPattern: string = '';
 
-	public regExpPattern: string = "";
-	public textPattern: string = "";
+	public regExpPattern: string = '';
+	public textPattern: string = '';
 
 	get isMatching(): Boolean {
 		return this._isMatching;
@@ -85,43 +85,43 @@ export class ResultControlerService {
 
 	constructor() {
 		this.matches$ = new BehaviorSubject<RegExpExecArray[]>([]);
-		this.result$ = new BehaviorSubject<string>("");
+		this.result$ = new BehaviorSubject<string>('');
 
-		if (typeof Worker !== "undefined") {
+		if (typeof Worker !== 'undefined') {
 			// Create a new
-			this.worker = new Worker("./result-controller.worker", {
-				type: "module",
+			this.worker = new Worker('./result-controller.worker', {
+				type: 'module',
 			});
-			this.worker.addEventListener("message", ({ data }) => {
+			this.worker.addEventListener('message', ({ data }) => {
+				console.log(data);
 				switch (data.type) {
-					case "FINISH_PROCESS_MATCHES": {
-						console.log("F");
+					case 'FINISH_PROCESS_MATCHES': {
 						this.matches$.next(data.matches);
 						this.proccessLast();
 						break;
 					}
-					case "FINISH_PROCESS_EACH_FUNCTION":
-					case "FINISH_PROCESS_GLOBAL_FUNCTION":
-					case "FINISH_PROCESS_ARGUMENTS_PATTERN": {
+					case 'FINISH_PROCESS_EACH_FUNCTION':
+					case 'FINISH_PROCESS_GLOBAL_FUNCTION':
+					case 'FINISH_PROCESS_ARGUMENTS_PATTERN': {
 						this.result$.next(data.result);
 						this._eachFunctionError = null;
 						this._globalFunctionError = null;
 						break;
 					}
-					case "ERROR_PROCESS_EACH_FUNCTION": {
+					case 'ERROR_PROCESS_EACH_FUNCTION': {
 						this._eachFunctionError = data.error;
 						break;
 					}
-					case "ERROR_PROCESS_GLOBAL_FUNCTION": {
+					case 'ERROR_PROCESS_GLOBAL_FUNCTION': {
 						this._globalFunctionError = data.error;
 						break;
 					}
-					case "ERROR_PROCESS_ARGUMENTS_PATTERN": {
+					case 'ERROR_PROCESS_ARGUMENTS_PATTERN': {
 						break;
 					}
-					case "LOOP_ERROR_PROCESS_EACH_FUNCTION":
-					case "LOOP_ERROR_PROCESS_GLOBAL_FUNCTION": {
-						alert("LOOP");
+					case 'LOOP_ERROR_PROCESS_EACH_FUNCTION':
+					case 'LOOP_ERROR_PROCESS_GLOBAL_FUNCTION': {
+						alert('LOOP');
 						break;
 					}
 				}
@@ -134,9 +134,8 @@ export class ResultControlerService {
 
 	processMatches = () => {
 		if (!this.isMatching) return;
-		console.log(this.matches$.getValue());
 		this.worker.postMessage({
-			type: "PROCESS_MATCHES",
+			type: 'PROCESS_MATCHES',
 			data: {
 				regexp: this.regExpPattern,
 				text: this.textPattern,
@@ -148,11 +147,10 @@ export class ResultControlerService {
 		this.processType = ProcessType.EachGroup;
 		if (!this.isProccessing || !this.isMatching) return;
 
-		if (this._eachFunction === "")
-			return this.result$.next("");
+		if (this._eachFunction === '') return this.result$.next('');
 
 		this.worker.postMessage({
-			type: "PROCESS_EACH_FUNCTION",
+			type: 'PROCESS_EACH_FUNCTION',
 			data: {
 				code: this._eachFunction,
 				matches: this.matches$.getValue(),
@@ -165,11 +163,10 @@ export class ResultControlerService {
 
 		if (!this.isProccessing || !this.isMatching) return;
 
-		if (this._globalFunction === "")
-			return this.result$.next("");
+		if (this._globalFunction === '') return this.result$.next('');
 
 		this.worker.postMessage({
-			type: "PROCESS_GLOBAL_FUNCTION",
+			type: 'PROCESS_GLOBAL_FUNCTION',
 			data: {
 				code: this._globalFunction,
 				matches: this.matches$.getValue(),
@@ -182,11 +179,10 @@ export class ResultControlerService {
 
 		if (!this.isProccessing || !this.isMatching) return;
 
-		if (this._argumentsPattern === "")
-			return this.result$.next("");
+		if (this._argumentsPattern === '') return this.result$.next('');
 
 		this.worker.postMessage({
-			type: "PROCESS_ARGUMENTS_PATTERN",
+			type: 'PROCESS_ARGUMENTS_PATTERN',
 			data: {
 				pattern: this._argumentsPattern,
 				matches: this.matches$.getValue(),
