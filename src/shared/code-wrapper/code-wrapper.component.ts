@@ -1,5 +1,16 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, AfterViewInit } from '@angular/core';
+import {
+	Component,
+	OnInit,
+	Input,
+	Output,
+	EventEmitter,
+	ViewChild,
+	AfterViewInit,
+	ContentChild,
+} from '@angular/core';
 import { CodemirrorComponent } from '@ctrl/ngx-codemirror';
+import { DiffEditorComponent } from 'ngx-monaco-editor';
+import { editor } from 'monaco-editor';
 
 @Component({
 	selector: 'app-code-wrapper',
@@ -7,18 +18,40 @@ import { CodemirrorComponent } from '@ctrl/ngx-codemirror';
 	styleUrls: ['./code-wrapper.component.scss'],
 })
 export class CodeWrapperComponent {
-	@Input('type') _type: 'js' | 'regexp' = 'js';
-	@Input('viewOnly') _viewOnly: Boolean = false;
+	title: string = 'kit-services';
+	editorOptions: any = {
+		theme: 'vs-dark',
+		language: 'typescript',
+		autoClosingBrackets: 'always',
+		autoClosingQuotes: 'always',
+		formatOnType: true,
+		highlightActiveIndentGuide: true,
+	};
+	editorRef: editor.ICodeEditor;
+
+	@ViewChild('editor') editor: DiffEditorComponent;
+
+	@Input('type') private _type: 'js' | 'regexp' = 'js';
+	@Input('viewOnly') _viewOnly: boolean = false;
+
+	get type(): 'js' | 'regexp' {
+		return this._type;
+	}
+	set type(type: 'js' | 'regexp') {
+		this._type = type;
+	}
 
 	@Input('code') code: string = '';
-	@Input('readOnly') readOnly: Boolean = false;
+	@Input('readOnly') readOnly: boolean = false;
 
 	@Input('placeholder') placeholder: string = '';
 
-	@Output('codeChange') codeChange = new EventEmitter<string>();
+	@Output('codeChange') codeChange: EventEmitter<string> = new EventEmitter<
+		string
+	>();
 
 	@ViewChild('codeMirror', { static: false })
-	_codeMirror: CodemirrorComponent;
+	private _codeMirror: CodemirrorComponent;
 
 	get codeMirror(): CodeMirror.EditorFromTextArea {
 		return this._codeMirror ? this._codeMirror.codeMirror : null;
@@ -26,7 +59,12 @@ export class CodeWrapperComponent {
 
 	constructor() {}
 
-	onCodeChange(code: string) {
+	async onInitEditor(editor, editorId): Promise<void> {
+		console.log('A');
+		this.editorRef = editor;
+	}
+
+	onCodeChange(code: string): void {
 		this.codeChange.emit(code);
 	}
 }

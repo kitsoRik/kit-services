@@ -1,7 +1,9 @@
-<ngx-codemirror #codeMirror class="code-mirror" [ngModel]="code" (ngModelChange)="onCodeChange($event)" [options]="{
-				extraKeys: { 'Ctrl-Space': 'autocomplete' },
-				mode: { name: 'javascript', globalVars: true },
-				lineNumbers: true,
-				autoRefresh: true,
-				placeholder: placeholder
-			}"></ngx-codemirror>
+<ngx-monaco-editor
+	#editor
+	class="editor"
+	[options]="editorOptions"
+	[(ngModel)]="code"
+	(ngModelChange)="codeChange.emit($event)"
+	(onInit)="onInitEditor($event, 'largeEditor')"
+>
+</ngx-monaco-editor>
