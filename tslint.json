@@ -22,12 +22,16 @@
 		"member-ordering": [
 			true,
 			{
-				"order": ["static-field", "instance-field", "static-method", "instance-method"]
+				"order": [
+					"static-field",
+					"instance-field",
+					"static-method",
+					"instance-method"
+				]
 			}
 		],
 		"no-console": [true, "debug", "info", "time", "timeEnd", "trace"],
 		"no-empty": false,
-		"no-inferrable-types": [true, "ignore-params"],
 		"no-non-null-assertion": true,
 		"no-redundant-jsdoc": true,
 		"no-switch-case-fall-through": true,
@@ -46,7 +50,13 @@
 				"named": "never"
 			}
 		},
-		"typedef": [true, "call-signature"],
+		"typedef": [
+			true,
+			"call-signature",
+			"property-declaration",
+			"variable-declaration",
+			"member-variable-declaration"
+		],
 		"typedef-whitespace": {
 			"options": [
 				{
@@ -66,21 +76,33 @@
 			]
 		},
 		"variable-name": {
-			"options": ["ban-keywords", "check-format", "allow-pascal-case"]
+			"options": [
+				"ban-keywords",
+				"check-format",
+				"allow-pascal-case",
+				"allow-leading-underscore"
+			]
 		},
 		"whitespace": {
-			"options": ["check-branch", "check-decl", "check-operator", "check-separator", "check-type", "check-typecast"]
+			"options": [
+				"check-branch",
+				"check-decl",
+				"check-operator",
+				"check-separator",
+				"check-type",
+				"check-typecast"
+			]
 		},
 		"component-class-suffix": true,
 		"contextual-lifecycle": true,
 		"directive-class-suffix": true,
 		"no-conflicting-lifecycle": true,
 		"no-host-metadata-property": true,
-		"no-input-rename": true,
+		"no-input-rename": false,
 		"no-inputs-metadata-property": true,
 		"no-output-native": true,
 		"no-output-on-prefix": true,
-		"no-output-rename": true,
+		"no-output-rename": false,
 		"no-outputs-metadata-property": true,
 		"template-banana-in-box": true,
 		"template-no-negated-async": true,
