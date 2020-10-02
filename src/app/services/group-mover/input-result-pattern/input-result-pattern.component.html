@@ -1,24 +1,11 @@
-<mat-tab-group mat-stretch-tabs class="tabs">
-	<mat-tab label="Each match">
-		<app-code-wrapper #eachCodeCM [(code)]="eachCodePattern" class="wr" (codeChange)="setEachFunctionText()">
-			<app-code-wrapper-errors>{{
+<div class="tabs">
+	<mat-tab-group mat-stretch-tabs>
+		<mat-tab label="Each match" class="tab"> </mat-tab>
+		<mat-tab label="All matches"> </mat-tab>
+		<mat-tab label="Arguments"> </mat-tab> </mat-tab-group
+	><app-code-wrapper #codeWrapper [(code)]="eachCodePattern">
+		<app-code-wrapper-errors>{{
 			eachFunctionError
 		}}</app-code-wrapper-errors>
-		</app-code-wrapper>
-	</mat-tab>
-	<mat-tab label="All matches">
-		<app-code-wrapper #globalCodeCM [(code)]="globalCodePattern" (codeChange)="setGlobalFunctionText()">
-			<app-code-wrapper-errors>{{
-			eachFunctionError
-		}}</app-code-wrapper-errors>
-		</app-code-wrapper>
-	</mat-tab>
-	<mat-tab label="Arguments">
-		<app-code-wrapper #argumentsCM placeholder="%1 %2 %3" [(code)]="argumentsPattern"
-			(codeChange)="setArgumentsText()">
-			<app-code-wrapper-errors>{{
-			eachFunctionError
-		}}</app-code-wrapper-errors>
-		</app-code-wrapper>
-	</mat-tab>
-</mat-tab-group>
+	</app-code-wrapper>
+</div>
