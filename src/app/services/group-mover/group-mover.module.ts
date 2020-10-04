@@ -9,6 +9,7 @@ import { ResultControlerService } from './result-controler.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CodeWrapperModule } from 'src/shared/code-wrapper/code-wrapper.module';
 import { MaterialModule } from 'src/app/material/material.module';
+import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 
 @NgModule({
 	declarations: [
@@ -18,8 +19,15 @@ import { MaterialModule } from 'src/app/material/material.module';
 		GroupsViewerComponent,
 		ResultViewerComponent,
 	],
-	imports: [CommonModule, CodeWrapperModule, FormsModule, ReactiveFormsModule, MaterialModule],
+	imports: [
+		CommonModule,
+		CodeWrapperModule,
+		FormsModule,
+		ReactiveFormsModule,
+		MaterialModule,
+		CodemirrorModule,
+	],
 	exports: [GroupMoverComponent],
 	providers: [ResultControlerService],
 })
-export class GroupMoverModule { }
+export class GroupMoverModule {}

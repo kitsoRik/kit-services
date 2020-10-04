@@ -21,7 +21,7 @@ addEventListener('message', ({ data: { type, data } }: any) => {
 
 const processMatches = ({ regexp, text }: any) => {
 	const w = createWorker(({ data: { regexp, text } }) => {
-		const reg = new RegExp(regexp, 'g');
+		const reg = new RegExp(regexp, 'gi');
 		const matches: RegExpExecArray[] = [];
 		let match: RegExpExecArray;
 		let __index = 0;

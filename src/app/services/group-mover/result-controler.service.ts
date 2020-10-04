@@ -93,7 +93,6 @@ export class ResultControlerService {
 				type: 'module',
 			});
 			this.worker.addEventListener('message', ({ data }) => {
-				console.log(data);
 				switch (data.type) {
 					case 'FINISH_PROCESS_MATCHES': {
 						this.matches$.next(data.matches);

@@ -3,16 +3,32 @@
 		<td>
 			<mat-form-field class="reg-exp-input">
 				<mat-label>Regulat expression</mat-label>
-				<input matInput [(ngModel)]="regExpPattern" (ngModelChange)="setRegExpPattern()">
+				<input
+					matInput
+					[(ngModel)]="regExpPattern"
+					(ngModelChange)="setRegExpPattern()"
+				/>
 			</mat-form-field>
 		</td>
 		<td>
 			<mat-form-field class="reg-exp-flags-input">
 				<mat-label>Flags</mat-label>
-				<input matInput>
+				<input matInput />
 			</mat-form-field>
 		</td>
 	</tr>
 </table>
 
-<textarea style="resize: none;" [(ngModel)]="textPattern" (ngModelChange)="setTextPattern()"></textarea>
+<div #textWrapper class="text-wrapper">
+	<textarea
+		#textarea
+		[(ngModel)]="textPattern"
+		(ngModelChange)="setTextPattern()"
+	></textarea>
+	<canvas
+		#textareaCanvas
+		[width]="canvasWidth"
+		[height]="canvasHeight"
+		style="position: absolute"
+	></canvas>
+</div>

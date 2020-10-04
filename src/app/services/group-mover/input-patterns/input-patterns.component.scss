@@ -1,23 +1,42 @@
 :host {
-    height: 50%;
+	height: 50%;
 
-    display: grid;
-    grid-template-rows: min-content auto;
+	display: grid;
+	grid-template-rows: min-content auto;
 }
 
 .table {
-    width: 100%;
+	width: 100%;
 }
 
 .reg-exp-input {
-    width: 100%;
+	width: 100%;
 }
 
 .reg-exp-flags-input {
-    width: 100%;
+	width: 100%;
 }
 
 .line {
-    display: grid;
-    grid-template-columns: 1fr 130px;
+	display: grid;
+	grid-template-columns: 1fr 130px;
+}
+
+.text-wrapper {
+	flex: 1;
+
+	display: flex;
+	position: relative;
+
+	textarea {
+		resize: none;
+		flex: 1;
+		white-space: pre;
+		overflow-wrap: normal;
+		overflow-x: scroll;
+	}
+
+	canvas {
+		pointer-events: none;
+	}
 }

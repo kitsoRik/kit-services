@@ -50,13 +50,7 @@
 				"named": "never"
 			}
 		},
-		"typedef": [
-			true,
-			"call-signature",
-			"property-declaration",
-			"variable-declaration",
-			"member-variable-declaration"
-		],
+		"typedef": [true, "call-signature", "property-declaration"],
 		"typedef-whitespace": {
 			"options": [
 				{

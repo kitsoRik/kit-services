@@ -5,12 +5,15 @@ import { ResultControlerService } from '../result-controler.service';
 @Component({
 	selector: 'app-groups-viewer',
 	templateUrl: './groups-viewer.component.html',
-	styleUrls: ['./groups-viewer.component.scss']
+	styleUrls: ['./groups-viewer.component.scss'],
 })
 export class GroupsViewerComponent {
-
-	get hasPrev(): Boolean { return this.groupIndex > 0; }
-	get hasNext(): Boolean { return this.groupIndex < this.matches.length - 1; }
+	get hasPrev(): Boolean {
+		return this.groupIndex > 0;
+	}
+	get hasNext(): Boolean {
+		return this.groupIndex < this.matches.length - 1;
+	}
 
 	fullMatchGroup: Group;
 	groups: Group[];
@@ -18,9 +21,8 @@ export class GroupsViewerComponent {
 	matches: RegExpExecArray[];
 
 	constructor(private resultController: ResultControlerService) {
-		this.resultController.matches$.subscribe(matches => {
+		this.resultController.matches$.subscribe((matches) => {
 			this.matches = matches;
-			console.log("M");
 			this.setGroup();
 		});
 	}
@@ -28,7 +30,7 @@ export class GroupsViewerComponent {
 	setGroup() {
 		if (this.matches.length === 0) return this.clear();
 
-		this.groups = []
+		this.groups = [];
 		if (this.matches.length <= this.groupIndex)
 			this.groupIndex = this.matches.length - 1;
 		else if (this.groupIndex === -1) this.groupIndex = 0;
@@ -38,7 +40,6 @@ export class GroupsViewerComponent {
 		const match = this.matches[this.groupIndex];
 
 		if (!match) return;
-
 
 		this.fullMatchGroup = new Group(0, match[0]);
 		for (let i = 1; i < match.length; i++) {
