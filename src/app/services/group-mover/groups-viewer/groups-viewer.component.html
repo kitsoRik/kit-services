@@ -1,0 +1,24 @@
+<div class="groups-viewer-groups-container">
+	<ng-container *ngIf="fullMatchGroup">
+		<span class="groups-viewer-groups-container-full-match">F: {{ fullMatchGroup.text }}</span>
+		<div class="groups-viewer-groups-container-matches">
+			<span class="groups-viewer-group-container-matches-match" *ngFor="let group of groups; let index = index">
+				{{ index + 1 }}: {{ group.text }}
+			</span>
+		</div>
+	</ng-container>
+</div>
+
+<div class="groups-viewer-buttons">
+	<button mat-fab color="primary" class="groups-viewer-buttons-next" [disabled]="!hasPrev" (click)="prev()">
+		<mat-icon>keyboard_arrow_left</mat-icon>
+	</button>
+	<span>{{ groupIndex + 1 }}</span>
+	<button mat-fab color="primary" class="groups-viewer-buttons-next" [disabled]="!hasNext" (click)="next()">
+		<mat-icon style="transform: rotate(180deg)">keyboard_arrow_left</mat-icon>
+	</button>
+</div>
+
+<div class="groups-viewer-modal" *ngIf="matches.length === 0">
+	Type at the left
+</div>
