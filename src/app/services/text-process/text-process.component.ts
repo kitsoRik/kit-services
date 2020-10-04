@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { debounce } from 'rxjs/operators';
+import patterns from './patterns';
 
 @Component({
 	selector: 'app-text-process',
@@ -13,6 +13,10 @@ export class TextProcessComponent implements OnInit {
 	private _processedText = '';
 
 	private _functionText = localStorage.getItem('TEXT_PROCESS_FUNCTION') ?? '';
+
+	get patterns(): string[] {
+		return Object.keys(patterns).map((key) => patterns[key].title);
+	}
 
 	get text(): string {
 		return this._text;

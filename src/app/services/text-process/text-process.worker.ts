@@ -8,11 +8,10 @@ addEventListener('message', ({ data: { text, fnText } }: any) => {
 		}: {
 			data: { text: string; fnText: string };
 		}) => {
-			const f = new Function('text', `${fnText}`);
 			try {
+				const f = new Function('text', `${fnText}`);
 				const result = f(text);
 				postMessage(result);
-				console.log(result, 'PST');
 			} catch (e) {
 				postMessage('');
 			}
@@ -21,11 +20,9 @@ addEventListener('message', ({ data: { text, fnText } }: any) => {
 
 	w.addEventListener('message', ({ data }) => {
 		flag = true;
-		console.log(data);
 		postMessage(data);
 		w.terminate();
 	});
-
 	w.postMessage({ text, fnText });
 
 	setTimeout(() => {
