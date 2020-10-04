@@ -1,21 +1,27 @@
-const LETTER_WIDTH = 7.33;
-const LETTER_HEIGHT = 16;
+import {
+	getCharHeight,
+	getCharWidth,
+	getLineHeight,
+	getStringWidth,
+} from './get-char-width';
 
 export const renderPosition = (
 	match: string,
 	column: number,
-	row: number
+	row: number,
+	textBefore: string
 ): {
 	x: number;
 	y: number;
 	w: number;
 	h: number;
 } => {
-	const w = LETTER_WIDTH * match.length;
-	const h = LETTER_HEIGHT;
+	const w = getStringWidth(match);
+	const h = getLineHeight();
 
-	const x = column * LETTER_WIDTH;
-	const y = row * LETTER_HEIGHT;
+	const x = getStringWidth(textBefore.slice(0, column));
+
+	const y = row * getCharHeight();
 
 	const result = {
 		x,

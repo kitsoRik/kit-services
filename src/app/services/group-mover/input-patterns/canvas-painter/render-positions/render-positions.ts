@@ -23,7 +23,6 @@ export const renderPositions = (
 
 	const renderPositions: RenderPosition[] = [];
 	let match = matches[0];
-	console.log(matches);
 	let lastMatch: RegExpMatchArray = null;
 
 	while (match) {
@@ -33,7 +32,6 @@ export const renderPositions = (
 			lastMatch ? lastMatch.index + lastMatch[0].length + 1 : undefined
 		);
 
-		console.log(match);
 		lastTextMatchIndex = textMatchIndex;
 
 		while (lettersSkiped <= textMatchIndex) {
@@ -51,7 +49,12 @@ export const renderPositions = (
 				text.indexOf(matchText, lastTextMatchIndex) - lettersSkiped;
 		else column = text.indexOf(matchText, lastTextMatchIndex);
 
-		const renderPositionItem = renderPosition(matchText, column, row);
+		const renderPositionItem = renderPosition(
+			matchText,
+			column,
+			row,
+			lines[lineNumber].value.slice(0, column + 1)
+		);
 
 		renderPositions.push({
 			...renderPositionItem,
