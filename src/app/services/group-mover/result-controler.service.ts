@@ -17,7 +17,7 @@ export class ResultControlerService {
 	private _isProccessing: Boolean = true;
 	_isHighlighting$ = new BehaviorSubject<Boolean>(false);
 
-	private _eachFunction: string = '';
+	private _eachFunction: string = localStorage.getItem('EACH_FUNCTION') ?? '';
 	private _eachFunctionError: any = null;
 
 	private _globalFunction: string = '';
@@ -25,8 +25,29 @@ export class ResultControlerService {
 
 	private _argumentsPattern: string = '';
 
-	public regExpPattern: string = '';
-	public textPattern: string = '';
+	private _regExpPattern: string =
+		localStorage.getItem('REG_EXP_PATTERN') ?? '';
+	private _textPattern: string = localStorage.getItem('TEXT_PATTERN') ?? '';
+
+	get regExpPattern(): string {
+		return this._regExpPattern;
+	}
+
+	set regExpPattern(regExpPattern: string) {
+		this._regExpPattern = regExpPattern;
+
+		localStorage.setItem('REG_EXP_PATTERN', regExpPattern);
+	}
+
+	get textPattern(): string {
+		return this._textPattern;
+	}
+
+	set textPattern(textPattern: string) {
+		this._textPattern = textPattern;
+
+		localStorage.setItem('TEXT_PATTERN', textPattern);
+	}
 
 	get isMatching(): Boolean {
 		return this._isMatching;
@@ -60,6 +81,8 @@ export class ResultControlerService {
 
 	set eachFunction(value: string) {
 		this._eachFunction = value;
+
+		localStorage.setItem('EACH_FUNCTION', value);
 	}
 
 	get globalFunction(): string {
@@ -68,6 +91,8 @@ export class ResultControlerService {
 
 	set globalFunction(value: string) {
 		this._globalFunction = value;
+
+		localStorage.setItem('GLOBAL_FUNCTION', value);
 	}
 
 	get eachFunctionError(): any {
