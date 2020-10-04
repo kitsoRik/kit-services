@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ServicesRoutingModule } from './services-routing.module';
-import { TextProcessComponent } from './text-process/text-process.component';
+import { TextProcessModule } from './text-process/text-process.module';
 
 @NgModule({
-	declarations: [TextProcessComponent],
-	imports: [CommonModule, ServicesRoutingModule],
+	declarations: [],
+	imports: [CommonModule, ServicesRoutingModule, TextProcessModule],
 	exports: [],
 	providers: [],
 })

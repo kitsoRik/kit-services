@@ -1,1 +1,11 @@
-<p>text-process works!</p>
+<textarea
+	class="text"
+	[(ngModel)]="text"
+	(ngModelChange)="processText()"
+></textarea>
+<app-code-wrapper
+	class="code-wrapper"
+	[(code)]="functionText"
+	(codeChange)="processText()"
+></app-code-wrapper>
+<textarea class="text" [(ngModel)]="processedText"></textarea>

@@ -60,7 +60,6 @@ export class CodeWrapperComponent {
 	constructor() {}
 
 	async onInitEditor(editor, editorId): Promise<void> {
-		console.log('A');
 		this.editorRef = editor;
 	}
 
