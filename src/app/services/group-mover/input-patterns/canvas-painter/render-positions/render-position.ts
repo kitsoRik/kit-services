@@ -1,9 +1,4 @@
-import {
-	getCharHeight,
-	getCharWidth,
-	getLineHeight,
-	getStringWidth,
-} from './get-char-width';
+import { getCharHeight, getLineHeight, getStringWidth } from './get-char-width';
 
 export const renderPosition = (
 	match: string,

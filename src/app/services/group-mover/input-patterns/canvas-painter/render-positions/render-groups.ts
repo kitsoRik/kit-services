@@ -27,7 +27,12 @@ export const renderGroups = (
 
 		const column = text.indexOf(group);
 
-		const position = renderPosition(group, column, row);
+		const position = renderPosition(
+			group,
+			column,
+			row,
+			text.slice(0, column + 1)
+		);
 
 		groups.push({
 			x: offsetX + position.x,

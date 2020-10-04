@@ -45,7 +45,7 @@ const renderRect = (
 	h: number,
 	color: string
 ) => {
-	console.log(color);
 	context.fillStyle = color;
+	context.clearRect(3 + x, y, w, h);
 	context.fillRect(3 + x, y, w, h);
 };

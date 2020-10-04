@@ -1,6 +1,6 @@
 const TRANSPARENT = 60; // 0 - 100
 const MAIN_COLORS = ['#7FB3D5', '#117A65'];
-const GROUP_COLORS = ['#C0392B', '#E74C3C', '#9B59B6', '#2980B9'];
+const GROUP_COLORS = ['#E74C3C', '#9B59B6', '#2980B9'];
 
 export const getMainColor = (index: number): string => {
 	return transformColor(MAIN_COLORS[index % 2]);
