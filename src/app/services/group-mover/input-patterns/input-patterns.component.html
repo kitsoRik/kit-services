@@ -1,0 +1,34 @@
+<table class="table" cellspacing="0">
+	<tr class="line">
+		<td>
+			<mat-form-field class="reg-exp-input">
+				<mat-label>Regulat expression</mat-label>
+				<input
+					matInput
+					[(ngModel)]="regExpPattern"
+					(ngModelChange)="setRegExpPattern()"
+				/>
+			</mat-form-field>
+		</td>
+		<td>
+			<mat-form-field class="reg-exp-flags-input">
+				<mat-label>Flags</mat-label>
+				<input matInput />
+			</mat-form-field>
+		</td>
+	</tr>
+</table>
+
+<div #textWrapper class="text-wrapper">
+	<textarea
+		#textarea
+		[(ngModel)]="textPattern"
+		(ngModelChange)="setTextPattern()"
+	></textarea>
+	<canvas
+		#textareaCanvas
+		[width]="canvasWidth"
+		[height]="canvasHeight"
+		style="position: absolute"
+	></canvas>
+</div>

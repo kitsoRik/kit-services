@@ -1,0 +1,27 @@
+<textarea
+	class="text"
+	[(ngModel)]="text"
+	(ngModelChange)="processText()"
+></textarea>
+<mat-toolbar>
+	<span class="example-spacer"></span>
+	<mat-form-field
+		appearance="standart"
+		style="width: 300px"
+		[style.fontSize.px]="15"
+	>
+		<mat-label>Pattern</mat-label>
+		<mat-select>
+			<mat-option>None</mat-option>
+			<mat-option *ngFor="let state of patterns" [value]="state">{{
+				state
+			}}</mat-option>
+		</mat-select>
+	</mat-form-field>
+</mat-toolbar>
+<app-code-wrapper
+	class="code-wrapper"
+	[(code)]="functionText"
+	(codeChange)="processText()"
+></app-code-wrapper>
+<textarea class="text" [(ngModel)]="processedText"></textarea>

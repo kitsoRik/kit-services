@@ -1,0 +1,9 @@
+<ngx-monaco-editor
+	#editor
+	class="editor"
+	[options]="editorOptions"
+	[(ngModel)]="code"
+	(ngModelChange)="codeChange.emit($event)"
+	(onInit)="onInitEditor($event, 'largeEditor')"
+>
+</ngx-monaco-editor>

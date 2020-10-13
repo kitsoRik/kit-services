@@ -1,0 +1,17 @@
+:host {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.text {
+	min-height: 200px;
+}
+
+.code-wrapper {
+	min-height: 200px;
+}
+
+.example-spacer {
+	flex: 1 1 auto;
+}
