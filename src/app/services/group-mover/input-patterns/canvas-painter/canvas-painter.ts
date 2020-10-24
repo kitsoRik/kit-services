@@ -2,7 +2,7 @@ import { getGroupColor, getMainColor } from './colors';
 import { getLines } from './get-lines';
 import { renderPositions } from './render-positions/render-positions';
 
-export const canvasPainter = (
+export const canvasPainter = async (
 	canvas: HTMLCanvasElement,
 	textarea: HTMLTextAreaElement,
 	matches: RegExpMatchArray[]
@@ -10,14 +10,18 @@ export const canvasPainter = (
 	const context = canvas.getContext('2d');
 	const margin = 3;
 
+	const offsetTop = -canvas.offsetTop;
+	const canvasHeight = textarea.clientHeight;
+	console.log(offsetTop, canvasHeight);
+
 	context.clearRect(0, 0, 10000, 10000);
 
 	const text = textarea.value;
 	const lines = getLines(textarea);
-	const renderPositionsByLineNumber = renderPositions(text, matches, lines);
 
-	for (let index = 0; index < renderPositionsByLineNumber.length; index++) {
-		const { x, y, w, h, groups } = renderPositionsByLineNumber[index];
+	renderPositions(text, matches, lines, async (position, index) => {
+		const { x, y, w, h, groups } = position;
+		if (y < offsetTop || y > offsetTop + canvasHeight) return;
 
 		renderRect(context, x, y, w, h, getMainColor(index));
 
@@ -34,7 +38,7 @@ export const canvasPainter = (
 				getGroupColor(groupIndex)
 			);
 		}
-	}
+	});
 };
 
 const renderRect = (

@@ -19,12 +19,23 @@ addEventListener('message', ({ data: { type, data } }: any) => {
 	}
 });
 
-const processMatches = ({ regexp, text }: any) => {
-	const w = createWorker(({ data: { regexp, text } }) => {
-		const reg = new RegExp(regexp, 'gi');
+const processMatches = ({
+	regexp,
+	flags,
+	text,
+}: {
+	regexp: string;
+	text: string;
+	flags: string[];
+}) => {
+	const w = createWorker(({ data: { regexp, flags, text } }) => {
+		const reg = new RegExp(
+			regexp,
+			flags.reduce((prev, flag) => prev + flag, '')
+		);
 		const matches: RegExpExecArray[] = [];
 		let match: RegExpExecArray;
-		let __index = 0;
+
 		while ((match = reg.exec(text)) && match[0] !== '') {
 			matches.push(match);
 		}
@@ -40,7 +51,7 @@ const processMatches = ({ regexp, text }: any) => {
 		w.terminate();
 	});
 
-	w.postMessage({ regexp, text });
+	w.postMessage({ regexp, flags, text });
 };
 
 const processFunctionFactory = (fn, codeName: string) => {

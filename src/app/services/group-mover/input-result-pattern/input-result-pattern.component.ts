@@ -51,22 +51,21 @@ export class InputResultPatternComponent implements AfterViewInit {
 
 	ngAfterViewInit(): void {
 		setTimeout(() => {
-			this.codeWrapper.editorRef.onKeyDown((e) => {
-				const forbiddenEditLines: number[] = [
-					1,
-					this.codeWrapper.editorRef.getModel().getLineCount(),
-				];
-
-				if (
-					forbiddenEditLines.includes(
-						this.codeWrapper.editorRef.getPosition().lineNumber
-					) &&
-					![15, 16, 17, 18].includes(e.keyCode)
-				) {
-					e.preventDefault();
-					e.stopPropagation();
-				}
-			});
+			// this.codeWrapper.editorRef.onKeyDown((e) => {
+			// 	const forbiddenEditLines: number[] = [
+			// 		1,
+			// 		this.codeWrapper.editorRef.getModel().getLineCount(),
+			// 	];
+			// 	if (
+			// 		forbiddenEditLines.includes(
+			// 			this.codeWrapper.editorRef.getPosition().lineNumber
+			// 		) &&
+			// 		![15, 16, 17, 18].includes(e.keyCode)
+			// 	) {
+			// 		e.preventDefault();
+			// 		e.stopPropagation();
+			// 	}
+			// });
 		}, 1000);
 	}
 

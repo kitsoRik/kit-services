@@ -10,26 +10,27 @@ export type RenderPosition = {
 	groups: RenderGroupPosition[];
 };
 
-export const renderPositions = (
+export const renderPositions = async (
 	text: string,
 	matches: RegExpMatchArray[],
-	lines: { [line: number]: LineInfo }
-): RenderPosition[] => {
+	lines: { [line: number]: LineInfo },
+	callback: (pos: RenderPosition, index: number) => void | Promise<void>
+): Promise<void> => {
 	let lineNumber = 0;
 	let lettersSkiped = 0;
 
 	let lastTextMatchIndex = -1;
 	let matchIndex = 0;
 
-	const renderPositions: RenderPosition[] = [];
 	let match = matches[0];
 	let lastMatch: RegExpMatchArray = null;
+	let index = 0;
 
 	while (match) {
 		const matchText = match[0];
 		const textMatchIndex = text.indexOf(
 			matchText,
-			lastMatch ? lastMatch.index + lastMatch[0].length + 1 : undefined
+			lastMatch ? lastMatch.index + lastMatch.length + 1 : undefined
 		);
 
 		lastTextMatchIndex = textMatchIndex;
@@ -56,15 +57,20 @@ export const renderPositions = (
 			lines[lineNumber].value.slice(0, column + 1)
 		);
 
-		renderPositions.push({
-			...renderPositionItem,
-			groups: renderGroups(
-				match,
-				renderPositionItem.x,
-				renderPositionItem.y,
-				row
-			),
-		});
+		callback(
+			{
+				...renderPositionItem,
+				groups: renderGroups(
+					match,
+					renderPositionItem.x,
+					renderPositionItem.y,
+					row
+				),
+			},
+			index++
+		);
+
+		if (index % 1000 === 0) await delay(1);
 
 		lineNumber = 0;
 		lettersSkiped = 0;
@@ -72,6 +78,7 @@ export const renderPositions = (
 		lastMatch = match;
 		match = matches[++matchIndex];
 	}
-
-	return renderPositions;
 };
+
+export const delay = async (timeout: number) =>
+	new Promise((r) => setTimeout(r, timeout));

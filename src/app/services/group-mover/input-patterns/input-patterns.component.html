@@ -13,7 +13,14 @@
 		<td>
 			<mat-form-field class="reg-exp-flags-input">
 				<mat-label>Flags</mat-label>
-				<input matInput />
+				<mat-select [formControl]="flagsControl" multiple>
+					<mat-option value="i">i</mat-option>
+					<mat-option value="g">g</mat-option>
+					<mat-option value="m">m</mat-option>
+					<mat-option value="s">s</mat-option>
+					<mat-option value="u">u</mat-option>
+					<mat-option value="y">y</mat-option>
+				</mat-select>
 			</mat-form-field>
 		</td>
 	</tr>

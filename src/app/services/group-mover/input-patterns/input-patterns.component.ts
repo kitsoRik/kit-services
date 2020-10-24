@@ -11,6 +11,7 @@ import { debounce } from 'debounce';
 import { ResultControlerService } from '../result-controler.service';
 import { CodeWrapperComponent } from 'src/shared/code-wrapper/code-wrapper.component';
 import { canvasPainter } from './canvas-painter/canvas-painter';
+import { FormControl } from '@angular/forms';
 
 @Component({
 	selector: 'app-input-patterns',
@@ -55,6 +56,8 @@ export class InputPatternsComponent implements OnInit, AfterViewInit {
 		this.resultController.textPattern = value;
 	}
 
+	flagsControl = new FormControl();
+
 	@ViewChild('textCM', { static: true }) textCM: CodeWrapperComponent;
 	@ViewChild('regExpCM', { static: true }) regExpCM: CodemirrorComponent;
 
@@ -68,6 +71,12 @@ export class InputPatternsComponent implements OnInit, AfterViewInit {
 			} else {
 				this.clearAll();
 			}
+		});
+
+		this.flagsControl.setValue(this.resultController.flags);
+
+		this.flagsControl.valueChanges.subscribe((o) => {
+			this.resultController.flags = o;
 		});
 	}
 

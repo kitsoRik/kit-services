@@ -17,8 +17,6 @@ export const renderGroups = (
 ): RenderGroupPosition[] => {
 	if (match.length === 1) return [];
 
-	console.log(match);
-
 	const groups: RenderGroupPosition[] = [];
 	const text = match[0];
 

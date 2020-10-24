@@ -29,6 +29,8 @@ export class ResultControlerService {
 		localStorage.getItem('REG_EXP_PATTERN') ?? '';
 	private _textPattern: string = localStorage.getItem('TEXT_PATTERN') ?? '';
 
+	private _flags: string[] = JSON.parse(localStorage.getItem('FLAGS')) ?? [];
+
 	get regExpPattern(): string {
 		return this._regExpPattern;
 	}
@@ -37,6 +39,16 @@ export class ResultControlerService {
 		this._regExpPattern = regExpPattern;
 
 		localStorage.setItem('REG_EXP_PATTERN', regExpPattern);
+	}
+
+	get flags(): string[] {
+		return this._flags;
+	}
+
+	set flags(flags: string[]) {
+		this._flags = flags;
+
+		localStorage.setItem('FLAGS', JSON.stringify(flags));
 	}
 
 	get textPattern(): string {
@@ -163,6 +175,7 @@ export class ResultControlerService {
 			data: {
 				regexp: this.regExpPattern,
 				text: this.textPattern,
+				flags: this.flags,
 			},
 		});
 	};
