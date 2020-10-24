@@ -1,7 +1,15 @@
 <mat-toolbar color="primary">
 	<mat-toolbar-row>
-		<span>Third Line</span>
+		<button mat-icon-button routerLink="/">
+			<mat-icon>home</mat-icon>
+		</button>
+		<span>Just kit of services</span>
 		<span class="header-spacer"></span>
 		<mat-icon class="header-icon">favorite</mat-icon>
+		<mat-icon class="header-icon">
+			<a href="https://github.com/kitsoRik/kit-services" target="_blank">
+				<app-github-icon style="color: white"></app-github-icon>
+			</a>
+		</mat-icon>
 	</mat-toolbar-row>
 </mat-toolbar>
