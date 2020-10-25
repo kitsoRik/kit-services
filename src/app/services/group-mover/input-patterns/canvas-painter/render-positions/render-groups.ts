@@ -19,22 +19,21 @@ export const renderGroups = (
 
 	const groups: RenderGroupPosition[] = [];
 	const text = match[0];
-
+	let lastIndex = -1;
 	for (let i = 1; i < match.length; i++) {
 		const group = match[i];
-
-		const column = text.indexOf(group);
-
+		const column = text.indexOf(group, lastIndex + 1);
+		lastIndex += column;
 		const position = renderPosition(
 			group,
 			column,
 			row,
-			text.slice(0, column + 1)
+			text.slice(0, column)
 		);
 
 		groups.push({
 			x: offsetX + position.x,
-			y: position.y,
+			y: offsetY + position.y,
 			w: position.w,
 			h: position.h,
 

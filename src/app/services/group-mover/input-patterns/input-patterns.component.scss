@@ -28,6 +28,8 @@
 	display: flex;
 	position: relative;
 
+	overflow: hidden;
+
 	textarea {
 		resize: none;
 		flex: 1;
@@ -39,4 +41,13 @@
 	canvas {
 		pointer-events: none;
 	}
+}
+
+.canvasWrapper {
+	height: calc(100% - 20px);
+    width: calc(100% - 18px);
+    pointer-events: none;
+    position: absolute;
+    box-sizing: border-box;
+    overflow: hidden;
 }

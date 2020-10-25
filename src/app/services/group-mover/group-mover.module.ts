@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CodeWrapperModule } from 'src/shared/code-wrapper/code-wrapper.module';
 import { MaterialModule } from 'src/app/material/material.module';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
+import { MatcherService } from './matcher.service';
 
 @NgModule({
 	declarations: [
@@ -28,6 +29,6 @@ import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 		CodemirrorModule,
 	],
 	exports: [GroupMoverComponent],
-	providers: [ResultControlerService],
+	providers: [ResultControlerService, MatcherService],
 })
 export class GroupMoverModule {}

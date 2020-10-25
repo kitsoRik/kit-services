@@ -12,6 +12,7 @@ import { ResultControlerService } from '../result-controler.service';
 import { CodeWrapperComponent } from 'src/shared/code-wrapper/code-wrapper.component';
 import { canvasPainter } from './canvas-painter/canvas-painter';
 import { FormControl } from '@angular/forms';
+import { MatcherService } from '../matcher.service';
 
 @Component({
 	selector: 'app-input-patterns',
@@ -61,10 +62,16 @@ export class InputPatternsComponent implements OnInit, AfterViewInit {
 	@ViewChild('textCM', { static: true }) textCM: CodeWrapperComponent;
 	@ViewChild('regExpCM', { static: true }) regExpCM: CodemirrorComponent;
 
-	constructor(private resultController: ResultControlerService) {
-		this.resultController.matches$.subscribe((matches) => {
-			this.canvasRender(matches);
+	constructor(
+		private resultController: ResultControlerService,
+		private matcher: MatcherService
+	) {
+		this.resultController.$textPattern.subscribe(() => {
+			setTimeout(() => {
+				this.canvasRender();
+			}, 1);
 		});
+
 		this.resultController._isHighlighting$.subscribe((value) => {
 			if (value) {
 				this.marksAll();
@@ -92,14 +99,27 @@ export class InputPatternsComponent implements OnInit, AfterViewInit {
 			this.textareaCanvas.nativeElement.style.left = `-${this.textarea.nativeElement.scrollLeft}px`;
 			this.textareaCanvas.nativeElement.style.top = `-${this.textarea.nativeElement.scrollTop}px`;
 		});
+
+		this.textarea.nativeElement.addEventListener(
+			'scroll',
+			debounce(
+				(e) => {
+					console.log(e);
+					this.matcher.setMatchIndex(this.matcher.lastIndex - 1000);
+					this.canvasRender();
+				},
+				100,
+				false
+			)
+		);
 	}
 
-	canvasRender(matches: RegExpMatchArray[]): void {
+	canvasRender(): void {
 		if (!this.textarea) return;
 		canvasPainter(
 			this.textareaCanvas.nativeElement,
 			this.textarea.nativeElement,
-			matches
+			this.matcher
 		);
 	}
 

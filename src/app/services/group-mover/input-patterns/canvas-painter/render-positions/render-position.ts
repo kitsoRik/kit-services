@@ -14,8 +14,7 @@ export const renderPosition = (
 	const w = getStringWidth(match);
 	const h = getLineHeight();
 
-	const x = getStringWidth(textBefore.slice(0, column));
-
+	const x = getStringWidth(textBefore);
 	const y = row * getCharHeight();
 
 	const result = {

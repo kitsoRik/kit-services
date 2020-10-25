@@ -25,38 +25,55 @@ export class ResultControlerService {
 
 	private _argumentsPattern: string = '';
 
-	private _regExpPattern: string =
-		localStorage.getItem('REG_EXP_PATTERN') ?? '';
-	private _textPattern: string = localStorage.getItem('TEXT_PATTERN') ?? '';
+	private _regExpPattern = new BehaviorSubject<string>(
+		localStorage.getItem('REG_EXP_PATTERN') ?? ''
+	);
+	private _textPattern = new BehaviorSubject<string>(
+		localStorage.getItem('TEXT_PATTERN') ?? ''
+	);
 
-	private _flags: string[] = JSON.parse(localStorage.getItem('FLAGS')) ?? [];
+	private _flags = new BehaviorSubject<string[]>(
+		JSON.parse(localStorage.getItem('FLAGS')) ?? []
+	);
 
-	get regExpPattern(): string {
+	get $regExpPattern(): BehaviorSubject<string> {
 		return this._regExpPattern;
 	}
 
+	get regExpPattern(): string {
+		return this._regExpPattern.getValue();
+	}
+
 	set regExpPattern(regExpPattern: string) {
-		this._regExpPattern = regExpPattern;
+		this._regExpPattern.next(regExpPattern);
 
 		localStorage.setItem('REG_EXP_PATTERN', regExpPattern);
 	}
 
-	get flags(): string[] {
+	get $flags(): BehaviorSubject<string[]> {
 		return this._flags;
 	}
 
+	get flags(): string[] {
+		return this._flags.getValue();
+	}
+
 	set flags(flags: string[]) {
-		this._flags = flags;
+		this._flags.next(flags);
 
 		localStorage.setItem('FLAGS', JSON.stringify(flags));
 	}
 
-	get textPattern(): string {
+	get $textPattern(): BehaviorSubject<string> {
 		return this._textPattern;
 	}
 
+	get textPattern(): string {
+		return this._textPattern.getValue();
+	}
+
 	set textPattern(textPattern: string) {
-		this._textPattern = textPattern;
+		this._textPattern.next(textPattern);
 
 		localStorage.setItem('TEXT_PATTERN', textPattern);
 	}

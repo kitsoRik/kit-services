@@ -1,3 +1,4 @@
+import { MatcherService } from '../../../matcher.service';
 import { LineInfo } from '../get-lines';
 import { RenderGroupPosition, renderGroups } from './render-groups';
 import { renderPosition } from './render-position';
@@ -12,7 +13,7 @@ export type RenderPosition = {
 
 export const renderPositions = async (
 	text: string,
-	matches: RegExpMatchArray[],
+	matcher: MatcherService,
 	lines: { [line: number]: LineInfo },
 	callback: (pos: RenderPosition, index: number) => void | Promise<void>
 ): Promise<void> => {
@@ -20,17 +21,19 @@ export const renderPositions = async (
 	let lettersSkiped = 0;
 
 	let lastTextMatchIndex = -1;
-	let matchIndex = 0;
 
-	let match = matches[0];
+	let match = matcher.getNextMatch();
 	let lastMatch: RegExpMatchArray = null;
 	let index = 0;
-
 	while (match) {
 		const matchText = match[0];
 		const textMatchIndex = text.indexOf(
 			matchText,
-			lastMatch ? lastMatch.index + lastMatch.length + 1 : undefined
+			lastMatch
+				? lastMatch.index + lastMatch.length
+				: match
+				? match.index
+				: undefined
 		);
 
 		lastTextMatchIndex = textMatchIndex;
@@ -39,22 +42,20 @@ export const renderPositions = async (
 			lineNumber++;
 			lettersSkiped += lines[lineNumber].length;
 		}
-
 		lettersSkiped -= lines[lineNumber]?.length ?? 0;
 
 		const row = lineNumber - 1;
 		let column;
-
-		if (lettersSkiped !== 0)
-			column =
-				text.indexOf(matchText, lastTextMatchIndex) - lettersSkiped;
-		else column = text.indexOf(matchText, lastTextMatchIndex);
+		column = text.indexOf(
+			matchText,
+			lastMatch?.index + lastMatch?.[0].length ?? 0
+		);
 
 		const renderPositionItem = renderPosition(
 			matchText,
 			column,
 			row,
-			lines[lineNumber].value.slice(0, column + 1)
+			lines[lineNumber].value.slice(0, column)
 		);
 
 		callback(
@@ -70,13 +71,12 @@ export const renderPositions = async (
 			index++
 		);
 
-		if (index % 1000 === 0) await delay(1);
-
 		lineNumber = 0;
 		lettersSkiped = 0;
 
 		lastMatch = match;
-		match = matches[++matchIndex];
+		match = matcher.getNextMatch();
+		if (index % 1000 === 0) await delay(1);
 	}
 };
 

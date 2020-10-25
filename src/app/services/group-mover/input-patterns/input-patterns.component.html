@@ -32,10 +32,12 @@
 		[(ngModel)]="textPattern"
 		(ngModelChange)="setTextPattern()"
 	></textarea>
-	<canvas
-		#textareaCanvas
-		[width]="canvasWidth"
-		[height]="canvasHeight"
-		style="position: absolute"
-	></canvas>
+	<div class="canvasWrapper">
+		<canvas
+			#textareaCanvas
+			[width]="canvasWidth"
+			[height]="canvasHeight"
+			style="position: absolute"
+		></canvas>
+	</div>
 </div>

@@ -28,24 +28,38 @@ const processMatches = ({
 	text: string;
 	flags: string[];
 }) => {
-	const w = createWorker(({ data: { regexp, flags, text } }) => {
+	const w = createWorker(async ({ data: { regexp, flags, text } }) => {
 		const reg = new RegExp(
 			regexp,
 			flags.reduce((prev, flag) => prev + flag, '')
 		);
-		const matches: RegExpExecArray[] = [];
+		let matches: RegExpExecArray[] = [];
 		let match: RegExpExecArray;
+		let index = 0;
+		let lastIndex = 0;
 
 		while ((match = reg.exec(text)) && match[0] !== '') {
 			matches.push(match);
-		}
+			index++;
 
-		postMessage({ matches });
+			if (index % 10 === 0) {
+				const from = lastIndex;
+				const to = index;
+
+				postMessage({ matches, from, to });
+
+				matches = [];
+
+				lastIndex = index;
+			}
+		}
 	});
 
-	w.addEventListener('message', ({ data: { matches } }) => {
+	w.addEventListener('message', ({ data: { matches, from, to } }) => {
 		postMessage({
 			type: 'FINISH_PROCESS_MATCHES',
+			from,
+			to,
 			matches,
 		});
 		w.terminate();
