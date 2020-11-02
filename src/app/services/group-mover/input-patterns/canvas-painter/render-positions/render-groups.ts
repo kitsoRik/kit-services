@@ -1,16 +1,8 @@
+import { Position, RenderGroupPosition } from '../types';
 import { renderPosition } from './render-position';
 
-export type RenderGroupPosition = {
-	x: number;
-	y: number;
-	w: number;
-	h: number;
-
-	groupIndex: number;
-};
-
 export const renderGroups = (
-	match: RegExpMatchArray,
+	match: RegExpMatchArray & { groupsIndexes: any[] },
 	offsetX: number,
 	offsetY: number,
 	row: number
@@ -20,12 +12,13 @@ export const renderGroups = (
 	const groups: RenderGroupPosition[] = [];
 	const text = match[0];
 	let lastIndex = -1;
-	for (let i = 1; i < match.length; i++) {
-		const group = match[i];
-		const column = text.indexOf(group, lastIndex + 1);
+	for (let i = 0; i < match.groupsIndexes.length; i++) {
+		const { index, size } = match.groupsIndexes[i];
+		const column = index;
 		lastIndex += column;
+
 		const position = renderPosition(
-			group,
+			match[i + 1],
 			column,
 			row,
 			text.slice(0, column)
@@ -33,9 +26,11 @@ export const renderGroups = (
 
 		groups.push({
 			x: offsetX + position.x,
-			y: offsetY + position.y,
+			y: position.y,
 			w: position.w,
 			h: position.h,
+
+			text: text.slice(index, index + size),
 
 			groupIndex: i,
 		});

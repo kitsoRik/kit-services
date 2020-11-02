@@ -13,6 +13,7 @@ import { CodeWrapperComponent } from 'src/shared/code-wrapper/code-wrapper.compo
 import { canvasPainter } from './canvas-painter/canvas-painter';
 import { FormControl } from '@angular/forms';
 import { MatcherService } from '../matcher.service';
+import { GroupMoverWasmService } from '../group-mover-wasm.service';
 
 @Component({
 	selector: 'app-input-patterns',
@@ -64,7 +65,8 @@ export class InputPatternsComponent implements OnInit, AfterViewInit {
 
 	constructor(
 		private resultController: ResultControlerService,
-		private matcher: MatcherService
+		private matcher: MatcherService,
+		private groupMoverWasm: GroupMoverWasmService
 	) {
 		this.resultController.$textPattern.subscribe(() => {
 			setTimeout(() => {
@@ -104,7 +106,6 @@ export class InputPatternsComponent implements OnInit, AfterViewInit {
 			'scroll',
 			debounce(
 				(e) => {
-					console.log(e);
 					this.matcher.setMatchIndex(this.matcher.lastIndex - 1000);
 					this.canvasRender();
 				},

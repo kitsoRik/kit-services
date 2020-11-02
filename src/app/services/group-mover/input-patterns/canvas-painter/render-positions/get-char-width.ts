@@ -11,6 +11,7 @@ export const getStringWidth = (str: string) => {
 
 export const getCharWidth = (char?: string) => {
 	if (char === '\t') return CHAR_WIDTH * 5;
+	if (char === '\n') return 0;
 	return CHAR_WIDTH;
 };
 

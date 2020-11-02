@@ -1,21 +1,18 @@
 import { MatcherService } from '../../../matcher.service';
 import { LineInfo } from '../get-lines';
-import { RenderGroupPosition, renderGroups } from './render-groups';
+import { RenderPosition } from '../types';
+import { renderGroups } from './render-groups';
 import { renderPosition } from './render-position';
-
-export type RenderPosition = {
-	x: number;
-	y: number;
-	w: number;
-	h: number;
-	groups: RenderGroupPosition[];
-};
 
 export const renderPositions = async (
 	text: string,
 	matcher: MatcherService,
 	lines: { [line: number]: LineInfo },
-	callback: (pos: RenderPosition, index: number) => void | Promise<void>
+	callback: (
+		text: string,
+		pos: RenderPosition,
+		index: number
+	) => void | Promise<void>
 ): Promise<void> => {
 	let lineNumber = 0;
 	let lettersSkiped = 0;
@@ -46,10 +43,11 @@ export const renderPositions = async (
 
 		const row = lineNumber - 1;
 		let column;
-		column = text.indexOf(
-			matchText,
-			lastMatch?.index + lastMatch?.[0].length ?? 0
-		);
+		column =
+			text.indexOf(
+				matchText,
+				lastMatch?.index + lastMatch?.[0].length ?? 0
+			) - lettersSkiped;
 
 		const renderPositionItem = renderPosition(
 			matchText,
@@ -59,6 +57,7 @@ export const renderPositions = async (
 		);
 
 		callback(
+			matchText,
 			{
 				...renderPositionItem,
 				groups: renderGroups(

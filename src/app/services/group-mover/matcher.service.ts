@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { GroupMoverWasmService } from './group-mover-wasm.service';
 import { delay } from './input-patterns/canvas-painter/render-positions';
 import { ResultControlerService } from './result-controler.service';
 
@@ -8,10 +9,14 @@ import { ResultControlerService } from './result-controler.service';
 export class MatcherService {
 	private lastMatch: RegExpExecArray;
 	private regExp: RegExp;
+	private regExpText: string;
 	private text: string = '';
 	lastIndex: number = 0;
 
-	constructor(private resultController: ResultControlerService) {
+	constructor(
+		private resultController: ResultControlerService,
+		private wasm: GroupMoverWasmService
+	) {
 		this.resultController.$textPattern.subscribe((text) => {
 			let changedIndex;
 
@@ -33,7 +38,7 @@ export class MatcherService {
 		});
 		this.resultController.$regExpPattern.subscribe((regExp) => {
 			try {
-				console.log(regExp);
+				this.regExpText = regExp;
 				const lastIndex = this.regExp?.lastIndex ?? 0;
 				this.regExp = new RegExp(
 					regExp,
@@ -48,9 +53,50 @@ export class MatcherService {
 	}
 
 	getNextMatch(): any {
+		let result;
 		this.lastMatch = this.regExp.exec(this.resultController.textPattern);
+		result = this.lastMatch;
 
-		return this.lastMatch;
+		if (this.lastMatch) {
+			const tempPayload = this.wasm.getMatch(
+				this.lastMatch[0],
+				this.regExpText,
+				''
+			);
+
+			const groups: any = [];
+			let tempLastIndex = 0;
+
+			for (let i = 0; i < tempPayload.groupsLength; i++) {
+				const semiIndex = tempPayload.groupsIndexes.indexOf(
+					',',
+					tempLastIndex
+				);
+				const doublePointerIndex = tempPayload.groupsIndexes.indexOf(
+					':',
+					tempLastIndex
+				);
+
+				const indexStr = tempPayload.groupsIndexes.slice(
+					tempLastIndex,
+					doublePointerIndex
+				);
+				const sizeStr = tempPayload.groupsIndexes.slice(
+					doublePointerIndex + 1,
+					semiIndex
+				);
+
+				groups.push({
+					index: parseInt(indexStr, 10),
+					size: parseInt(sizeStr, 10),
+				});
+
+				tempLastIndex = semiIndex + 1;
+			}
+
+			result.groupsIndexes = groups;
+		}
+		return result;
 	}
 
 	setMatchIndex(index: number): void {

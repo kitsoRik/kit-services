@@ -1,3 +1,4 @@
+import { Position } from '../types';
 import { getCharHeight, getLineHeight, getStringWidth } from './get-char-width';
 
 export const renderPosition = (
@@ -5,12 +6,8 @@ export const renderPosition = (
 	column: number,
 	row: number,
 	textBefore: string
-): {
-	x: number;
-	y: number;
-	w: number;
-	h: number;
-} => {
+): Position => {
+	console.log(match);
 	const w = getStringWidth(match);
 	const h = getLineHeight();
 

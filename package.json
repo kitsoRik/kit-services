@@ -5,6 +5,7 @@
 		"ng": "ng",
 		"start": "ng serve",
 		"build": "ng build --aot=false build-optimizer=false",
+		"build:wasm:group-mover": "emcc --bind ./wasm-source/group-mover/group-mover.cpp -o ./src/assets/wasm/group-mover.js -O3 -s WASM=1 -s NO_EXIT_RUNTIME=1  -s \"EXTRA_EXPORTED_RUNTIME_METHODS=['ccall']\" -s MODULARIZE=1 -s EXPORT_NAME=\"GroupMoverModule\"",
 		"test": "ng test",
 		"lint": "ng lint",
 		"e2e": "ng e2e"
@@ -24,6 +25,7 @@
 		"@ctrl/ngx-codemirror": "^4.0.1",
 		"codemirror": "^5.58.1",
 		"debounce": "^1.2.0",
+		"ng-wasm": "^1.0.0-alpha.0",
 		"ngx-monaco-editor": "^6.0.0",
 		"rxjs": "~6.6.0",
 		"tslib": "^2.0.0",

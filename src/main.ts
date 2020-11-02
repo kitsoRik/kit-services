@@ -8,8 +8,9 @@ import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/markdown/markdown';
 
 if (environment.production) {
-  enableProdMode();
+	enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+platformBrowserDynamic()
+	.bootstrapModule(AppModule)
+	.catch((err) => console.error(err));

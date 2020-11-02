@@ -1,7 +1,8 @@
+import { GroupMoverWasmService } from '../../group-mover-wasm.service';
 import { MatcherService } from '../../matcher.service';
 import { getGroupColor, getMainColor } from './colors';
 import { getLines } from './get-lines';
-import { getCharWidth, getLineHeight } from './render-positions/get-char-width';
+import { placeTransfers } from './placeTransfers';
 import { renderPositions } from './render-positions/render-positions';
 
 export const canvasPainter = async (
@@ -13,7 +14,6 @@ export const canvasPainter = async (
 
 	const offsetTop = -canvas.offsetTop;
 	const canvasHeight = textarea.clientHeight;
-
 	const text = textarea.value;
 	const lines = getLines(textarea);
 	const clearFromLineNumber = Object.keys(lines).find((lineNumberKey) => {
@@ -30,26 +30,67 @@ export const canvasPainter = async (
 	context.clearRect(0, 0, 10000, 10000);
 	const offset = 500;
 
-	renderPositions(text, matcher, lines, async (position, index) => {
-		const { x, y, w, h, groups } = position;
-		if (y < offsetTop - offset || y > offsetTop + canvasHeight + offset)
-			return;
-		renderRect(context, x, y, w, h, getMainColor(index));
+	renderPositions(
+		text,
+		matcher,
+		lines,
+		async (fullMatchText, position, index) => {
+			const { y } = position;
+			if (y < offsetTop - offset || y > offsetTop + canvasHeight + offset)
+				return;
 
-		for (let groupIndex = 0; groupIndex < groups.length; groupIndex++) {
-			const renderGroupPosition = groups[groupIndex];
-			const group = renderGroupPosition;
+			const positionWithPlacedTransfers = placeTransfers(
+				fullMatchText,
+				position
+			);
+			let counterGroupIndex = 0;
+			positionWithPlacedTransfers.forEach(
+				(positionWithPlacedTransfer) => {
+					const {
+						x: pX,
+						y: pY,
+						w: pW,
+						h: pH,
+					} = positionWithPlacedTransfer;
+					renderRect(context, pX, pY, pW, pH, getMainColor(index));
+				}
+			);
 
-			renderRect(
-				context,
-				group.x,
-				group.y,
-				group.w,
-				group.h,
-				getGroupColor(groupIndex)
+			positionWithPlacedTransfers.forEach(
+				(positionWithPlacedTransfer) => {
+					const { groups: pGroups } = positionWithPlacedTransfer;
+					for (
+						let groupIndex = 0;
+						groupIndex < pGroups.length;
+						groupIndex++, counterGroupIndex++
+					) {
+						const renderGroupPosition = pGroups[groupIndex];
+						if (Array.isArray(renderGroupPosition)) {
+							renderGroupPosition.forEach((p) => {
+								renderRect(
+									context,
+									p.x,
+									p.y,
+									p.w,
+									p.h,
+									getGroupColor(counterGroupIndex)
+								);
+							});
+						} else {
+							renderRect(
+								context,
+								renderGroupPosition.x,
+								renderGroupPosition.y,
+								renderGroupPosition.w,
+								renderGroupPosition.h,
+								getGroupColor(counterGroupIndex)
+							);
+						}
+					}
+				}
 			);
 		}
-	});
+	);
 };
 
 const renderRect = (

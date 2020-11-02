@@ -11,6 +11,8 @@ import { CodeWrapperModule } from 'src/shared/code-wrapper/code-wrapper.module';
 import { MaterialModule } from 'src/app/material/material.module';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { MatcherService } from './matcher.service';
+import { GroupMoverWasmService } from './group-mover-wasm.service';
+import { NgWasmModule } from 'ng-wasm';
 
 @NgModule({
 	declarations: [
@@ -27,8 +29,11 @@ import { MatcherService } from './matcher.service';
 		ReactiveFormsModule,
 		MaterialModule,
 		CodemirrorModule,
+		NgWasmModule,
 	],
 	exports: [GroupMoverComponent],
-	providers: [ResultControlerService, MatcherService],
+	providers: [ResultControlerService, MatcherService, GroupMoverWasmService],
 })
-export class GroupMoverModule {}
+export class GroupMoverModule {
+	constructor(private w: GroupMoverWasmService) {}
+}
