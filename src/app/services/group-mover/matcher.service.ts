@@ -53,50 +53,58 @@ export class MatcherService {
 	}
 
 	getNextMatch(): any {
-		let result;
-		this.lastMatch = this.regExp.exec(this.resultController.textPattern);
-		result = this.lastMatch;
-
-		if (this.lastMatch) {
-			const tempPayload = this.wasm.getMatch(
-				this.lastMatch[0],
-				this.regExpText,
-				''
+		try {
+			let result;
+			this.lastMatch = this.regExp.exec(
+				this.resultController.textPattern
 			);
+			result = this.lastMatch;
 
-			const groups: any = [];
-			let tempLastIndex = 0;
-
-			for (let i = 0; i < tempPayload.groupsLength; i++) {
-				const semiIndex = tempPayload.groupsIndexes.indexOf(
-					',',
-					tempLastIndex
-				);
-				const doublePointerIndex = tempPayload.groupsIndexes.indexOf(
-					':',
-					tempLastIndex
+			if (this.lastMatch) {
+				const tempPayload = this.wasm.getMatch(
+					// throw error if not found
+					this.lastMatch[0].toLowerCase(),
+					this.regExpText.toLocaleLowerCase(),
+					''
 				);
 
-				const indexStr = tempPayload.groupsIndexes.slice(
-					tempLastIndex,
-					doublePointerIndex
-				);
-				const sizeStr = tempPayload.groupsIndexes.slice(
-					doublePointerIndex + 1,
-					semiIndex
-				);
+				const groups: any = [];
+				let tempLastIndex = 0;
 
-				groups.push({
-					index: parseInt(indexStr, 10),
-					size: parseInt(sizeStr, 10),
-				});
+				for (let i = 0; i < tempPayload.groupsLength; i++) {
+					const semiIndex = tempPayload.groupsIndexes.indexOf(
+						',',
+						tempLastIndex
+					);
+					const doublePointerIndex = tempPayload.groupsIndexes.indexOf(
+						':',
+						tempLastIndex
+					);
 
-				tempLastIndex = semiIndex + 1;
+					const indexStr = tempPayload.groupsIndexes.slice(
+						tempLastIndex,
+						doublePointerIndex
+					);
+					const sizeStr = tempPayload.groupsIndexes.slice(
+						doublePointerIndex + 1,
+						semiIndex
+					);
+
+					groups.push({
+						index: parseInt(indexStr, 10),
+						size: parseInt(sizeStr, 10),
+					});
+
+					tempLastIndex = semiIndex + 1;
+				}
+
+				result.groupsIndexes = groups;
 			}
 
-			result.groupsIndexes = groups;
+			return result;
+		} catch (e) {
+			return null;
 		}
-		return result;
 	}
 
 	setMatchIndex(index: number): void {

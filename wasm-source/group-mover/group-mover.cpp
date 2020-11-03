@@ -31,6 +31,7 @@ MatchPayload getMatch(const std::string &text, const std::string &regexp, const 
     }
     else
     {
+        std::cout << "NOT" << ' ' << text << ' ' << regexp << std::endl;
         throw std::runtime_error("Match didn't find");
     }
 

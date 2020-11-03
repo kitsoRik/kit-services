@@ -7,7 +7,6 @@ export const renderPosition = (
 	row: number,
 	textBefore: string
 ): Position => {
-	console.log(match);
 	const w = getStringWidth(match);
 	const h = getLineHeight();
 
